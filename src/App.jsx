@@ -1,0 +1,43 @@
+import { useEffect, useState } from 'react';
+import { profile, projects, skills, experience, volunteering } from './data/portfolioData';
+
+const Icon = ({ name, size = 20 }) => {
+  const paths = {
+    arrow: <><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></>, download: <><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></>, moon: <path d="M20.5 15.5A8.5 8.5 0 0 1 8.5 3.5 8.5 8.5 0 1 0 20.5 15.5Z"/>, sun: <><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></>, menu: <><path d="M4 7h16M4 12h16M4 17h16"/></>, close: <><path d="m6 6 12 12M18 6 6 18"/></>, mail: <><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></>, external: <><path d="M14 3h7v7"/><path d="M10 14 21 3"/><path d="M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6"/></>
+  };
+  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{paths[name]}</svg>;
+};
+
+const LinkedIn = () => <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.45 3H3.55A.55.55 0 0 0 3 3.55v16.9c0 .3.25.55.55.55h16.9c.3 0 .55-.25.55-.55V3.55a.55.55 0 0 0-.55-.55ZM8.34 18.34H5.67V9.76h2.67v8.58ZM7 8.59a1.55 1.55 0 1 1 0-3.1 1.55 1.55 0 0 1 0 3.1Zm11.35 9.75h-2.66v-4.17c0-1 0-2.28-1.39-2.28-1.4 0-1.61 1.08-1.61 2.2v4.25h-2.66V9.76h2.55v1.17h.04c.36-.67 1.22-1.39 2.51-1.39 2.69 0 3.18 1.77 3.18 4.07v4.73Z"/></svg>;
+const GitHub = () => <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2C6.48 2 2 6.58 2 12.23c0 4.51 2.87 8.34 6.84 9.69.5.1.68-.22.68-.49 0-.24-.01-1.04-.01-1.89-2.78.62-3.37-1.2-3.37-1.2-.46-1.19-1.11-1.51-1.11-1.51-.91-.64.07-.63.07-.63 1 .07 1.54 1.06 1.54 1.06.9 1.57 2.35 1.12 2.92.86.09-.67.35-1.12.64-1.38-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.04-2.75-.11-.26-.45-1.3.1-2.72 0 0 .85-.28 2.75 1.05A9.3 9.3 0 0 1 12 6.95c.85 0 1.71.12 2.51.34 1.9-1.33 2.74-1.05 2.74-1.05.55 1.42.21 2.46.1 2.72.65.72 1.04 1.63 1.04 2.75 0 3.93-2.34 4.8-4.57 5.05.36.32.68.93.68 1.89 0 1.37-.01 2.47-.01 2.81 0 .27.18.59.69.49A10.24 10.24 0 0 0 22 12.23C22 6.58 17.52 2 12 2Z"/></svg>;
+
+function App() {
+  const [dark, setDark] = useState(false); const [menu, setMenu] = useState(false);
+  useEffect(() => {
+    document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+  }, [dark]);
+  const closeMenu = () => setMenu(false);
+  return <div className="app">
+    <header className="nav"><a className="brand" href="#home">MM<span>.</span></a><nav className={menu ? 'open' : ''}>{['home','about','projects','experience','contact'].map(x => <a onClick={closeMenu} key={x} href={`#${x}`}>{x}</a>)}</nav><div className="nav-actions"><button className="theme" onClick={() => setDark(!dark)} aria-label="Switch color theme"><Icon name={dark ? 'sun' : 'moon'} /></button><button className="menu" onClick={() => setMenu(!menu)} aria-label="Open navigation"><Icon name={menu ? 'close' : 'menu'} /></button></div></header>
+
+    <main>
+      <section id="home" className="hero grain">
+        <div className="hero-copy reveal"><p className="eyebrow"><i/> AVAILABLE FOR OPPORTUNITIES</p><h1>Turning ideas into<br/><em>intelligent</em> experiences.</h1><p className="intro">Hi, I’m <b>{profile.name}</b> — a Data Science undergraduate who loves crafting thoughtful AI products and digital experiences.</p><div className="hero-buttons"><a href="#projects" className="button">Explore my work <Icon name="arrow"/></a><a href={profile.cv} download className="text-button">Download CV <Icon name="download" size={17}/></a></div><div className="hero-social"><a href={profile.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn"><LinkedIn/></a><a href={profile.github} target="_blank" rel="noreferrer" aria-label="GitHub"><GitHub/></a><a href={`mailto:${profile.email}`} aria-label="Email"><Icon name="mail"/></a></div></div>
+        <div className="hero-visual reveal"><div className="orbit orbit-one"/><div className="orbit orbit-two"/><div className="image-frame"><img src={profile.photo} alt="Mevini Munaweera placeholder portrait"/><div className="image-shade"/></div><div className="floating-card card-top"><span>✦</span><div><b>AI × Data</b><small>Building with purpose</small></div></div><div className="floating-card card-bottom"><strong>4.00</strong><span>Current<br/>GPA</span></div><div className="vertical-note">SCROLL TO DISCOVER <span>↓</span></div></div>
+      </section>
+
+      <section id="about" className="about section"><p className="eyebrow">01 — ABOUT ME</p><div className="split-title"><h2>Curious by nature.<br/><em>Driven by impact.</em></h2><div><p>I’m a third-year IT undergraduate specialising in Data Science at SLIIT. I build AI-powered applications that make complex technology feel useful, human, and ready for the real world.</p><a href={`mailto:${profile.email}`} className="inline-link">Let’s work together <Icon name="arrow" size={18}/></a></div></div><div className="stats"><div><strong>04</strong><span>Dean’s List<br/>awards</span></div><div><strong>4.00</strong><span>Current<br/>GPA</span></div><div><strong>03+</strong><span>AI products<br/>built</span></div><div><strong>2024</strong><span>Started at<br/>SLIIT</span></div></div></section>
+
+      <section className="skills section"><div className="section-head"><div><p className="eyebrow">02 — TOOLKIT</p><h2>Tools I use to<br/><em>make things happen.</em></h2></div><p>From model training to polished interfaces, I enjoy working across the full journey of an idea.</p></div><div className="skill-grid">{skills.map(([name, icon]) => <div className="skill" key={name}><span>{icon}</span><b>{name}</b></div>)}</div></section>
+
+      <section id="projects" className="projects section"><div className="section-head"><div><p className="eyebrow">03 — SELECTED WORK</p><h2>Things I’ve brought<br/><em>to life.</em></h2></div><p>AI products designed with both technical depth and human usefulness in mind.</p></div><div className="project-grid">{projects.map((project, index) => <article className={`project project-${index + 1}`} key={project.title}><div className="project-image"><img src={project.image} alt={`${project.title} placeholder project visual`}/><span>{project.year}</span><a href="#contact" aria-label={`Ask about ${project.title}`}><Icon name="arrow"/></a></div><div className="project-info"><p>{project.type}</p><h3>{project.title}</h3><div className="tags">{project.tags.map(tag => <span key={tag}>{tag}</span>)}</div><p className="description">{project.text}</p></div></article>)}</div><p className="placeholder-note">Project images are placeholders — replace them in <code>src/data/portfolioData.js</code>.</p></section>
+
+      <section id="experience" className="experience section"><p className="eyebrow">04 — EXPERIENCE</p><h2>Learning in motion,<br/><em>building momentum.</em></h2><div className="timeline">{experience.map((item, index) => <article key={item.title}><span className="index">0{index + 1}</span><div><p>{item.date}</p><h3>{item.title}</h3><b>{item.company}</b></div><p>{item.text}</p></article>)}</div></section>
+
+      <section className="volunteering section"><div className="section-head"><div><p className="eyebrow">05 — COMMUNITY</p><h2>Growing with my<br/><em>community.</em></h2></div><p>Leadership and teamwork have shaped how I build, collaborate, and show up for people.</p></div><div className="volunteer-grid">{volunteering.map(v => <article key={v.name}><img src={v.logo} alt={`${v.name} placeholder logo`}/><div><span>{v.year}</span><h3>{v.name}</h3><p>{v.role}</p></div></article>)}</div><p className="placeholder-note">Society logos are placeholders — update their image URLs in <code>src/data/portfolioData.js</code>.</p></section>
+
+      <section id="contact" className="contact grain"><p className="eyebrow">06 — GET IN TOUCH</p><h2>Let’s create something<br/><em>meaningful together.</em></h2><a className="contact-email" href={`mailto:${profile.email}`}>{profile.email} <Icon name="arrow"/></a><div className="contact-bottom"><span>© {new Date().getFullYear()} {profile.name}</span><div><a href={profile.linkedin} target="_blank" rel="noreferrer">LinkedIn</a><a href={profile.github} target="_blank" rel="noreferrer">GitHub</a></div><a href="#home">BACK TO TOP ↑</a></div></section>
+    </main>
+  </div>;
+}
+export default App;
